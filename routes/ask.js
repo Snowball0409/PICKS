@@ -7,10 +7,7 @@ router.post("/", (req, res) => {
     const userInput = req.body.userInput;
 
     // 使用 spawn 啟動一個 Python 子進程
-    const pythonProcess = spawn("python", [
-        "bin/my_python_script.py",
-        userInput,
-    ]);
+    const pythonProcess = spawn("python", ["bin/bot.py", userInput]);
 
     let output = "";
 
