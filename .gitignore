@@ -2,4 +2,4 @@
 \crawler
 \node_modules
 \tests
-\bin\my_python_script.py
+/bin/my_python_script.py
