@@ -1,5 +1,9 @@
 # git ignore file
-\crawler
-\node_modules
-\tests
-\bin\my_python_script
+crawler
+node_modules
+tests
+bin\my_python_script
+key
+
+.DS_Store
+test
