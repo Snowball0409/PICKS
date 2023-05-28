@@ -1,6 +1,6 @@
 # git ignore file
-/crawler
-/node_modules
-/tests
-/bin/my_python_script.py
-/.vscode
+crawler
+node_modules
+tests
+bin/my_python_script.py
+.vscode
