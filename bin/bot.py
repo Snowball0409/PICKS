@@ -3,7 +3,7 @@ import openai
 import re
 import sys
 
-keyfile = open("../key/openaiKey.txt", "r")
+keyfile = open("key/openaiKey.txt", "r")
 key = keyfile.readline()
 openai.api_key = key
 
