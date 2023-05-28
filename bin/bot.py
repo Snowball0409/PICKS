@@ -30,11 +30,19 @@ def skills(user_input):
 # 接收父程式傳遞的輸入參數
 user_input = sys.argv[1] if len(sys.argv) > 1 else None
 
-# 在腳本中使用輸入參數進行處理
 if user_input:
-    result = skills(user_input)
+    retry  =  5
+    while retry > -1:
+        result = skills(user_input)
+        if result:
+            # 將結果輸出到控制台
+            print(result)
+            break
+        if retry ==  0:
+            print("五次請求失敗")
+            break
+        else: 
+            retry -= 1
+            print("retry")
 else:
     result = "沒有收到輸入參數"
-
-# 將結果輸出到控制台
-print(result)
