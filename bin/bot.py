@@ -43,6 +43,6 @@ if user_input:
             break
         else: 
             retry -= 1
-            print("retry")
+            #print("retry") #測試用
 else:
     result = "沒有收到輸入參數"
