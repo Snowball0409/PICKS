@@ -1,5 +1,6 @@
 var express = require("express");
 var { spawn } = require("child_process");
+var iconv = require("iconv-lite");
 var router = express.Router();
 
 router.post("/", (req, res) => {
@@ -13,7 +14,9 @@ router.post("/", (req, res) => {
 
     // 監聽子進程的輸出
     pythonProcess.stdout.on("data", (data) => {
-        output += data.toString();
+        // 將原始的 buffer 資料轉換為 UTF-8 字串
+        const decodedData = iconv.decode(data, "big5");
+        output += decodedData;
     });
 
     // 監聽子進程的錯誤訊息

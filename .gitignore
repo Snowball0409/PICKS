@@ -4,5 +4,4 @@ node_modules
 tests
 key/openaiKey.txt
 .DS_Store
-test
 .vscode
