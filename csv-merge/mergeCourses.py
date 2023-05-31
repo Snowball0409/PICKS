@@ -7,16 +7,10 @@ folder_path = 'csv-merge/course'
 # 取得資料夾列表
 folder_list = [f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
 
-# 印出結果
-for folder_name in folder_list:
-    print(folder_name)
-
-# specifying the path to csv files
-
-
 # 建立一個空的 DataFrame 來存放結果
-result_df = pd.DataFrame()
+
 for i in range(len(folder_list)):
+    result_df = pd.DataFrame()
     path = "csv-merge/course/"+folder_list[i]
     # 讀取資料夾中的 Excel 檔案
     for filename in os.listdir(path):
@@ -28,4 +22,4 @@ for i in range(len(folder_list)):
     # 匯出結果為 CSV 檔案
     print(result_df.head(3))
     output_path = 'csv-merge/output/'+folder_list[i]+'.csv'
-    result_df.to_csv(output_path, index=False)
+    result_df.to_csv(output_path, index=False, encoding='utf-8')
