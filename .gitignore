@@ -6,3 +6,7 @@ key/openaiKey.txt
 
 .DS_Store
 test
+
+.vscode
+
+csv-merge/course
