@@ -1,28 +1,25 @@
-var express = require("express");
-var { spawn } = require("child_process");
-var iconv = require("iconv-lite");
-var axios = require("axios");
-var router = express.Router();
+const express = require("express");
+const axios = require("axios");
+const router = express.Router();
 
-router.post("/", (req, res) => {
-    // 從請求的 JSON 主體中獲取使用者輸入
-    const userInput = req.body.userInput;
+router.post("/", async (req, res) => {
+    try {
+        // 從請求的 JSON 主體中獲取使用者輸入
+        const userInput = req.body.userInput;
 
-    // 設定容器的 IP 位址和端口號
-    const containerUrl =
-        "https://pybot.internal.bravesky-7a2be4de.centralus.azurecontainerapps.io:3000";
+        // 設定 Azure Function 的 URL
+        const azureFunctionUrl =
+            "https://pybot-lat.azurewebsites.net/api/HttpTrigger1?code=Nh7R7ViwrpYfsfgvL37FPcfO20CpPaDG4g5nid_7ZjeuAzFu1cX9bw==";
 
-    // 發送 HTTP POST 請求給容器
-    axios
-        .post(containerUrl, userInput)
-        .then((response) => {
-            // 在這裡處理容器的回應
-            res.json({ output: response.data });
-        })
-        .catch((error) => {
-            console.error("An error occurred:", error);
-            res.status(500).json({ error: "An error occurred" });
-        });
+        // 發送 HTTP POST 請求給 Azure Function
+        const response = await axios.post(azureFunctionUrl, { userInput });
+
+        // 在這裡處理 Azure Function 的回應
+        res.json({ output: response.data });
+    } catch (error) {
+        console.error("An error occurred:", error);
+        res.status(500).json({ error: "An error occurred" });
+    }
 });
 
 module.exports = router;
