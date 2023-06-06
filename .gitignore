@@ -3,10 +3,8 @@ crawler
 node_modules
 tests
 key/openaiKey.txt
-
+key/DigiCertGlobalRootCA.crt.pem
 .DS_Store
 test
-
 .vscode
-
 csv-merge/course

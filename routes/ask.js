@@ -1,35 +1,78 @@
 var express = require("express");
-var { spawn } = require("child_process");
+const axios = require("axios");
+const mysql = require("mysql");
 var router = express.Router();
 
-router.post("/", (req, res) => {
-    // 從請求的 JSON 主體中獲取使用者輸入
-    const userInput = req.body.userInput;
+router.post("/", async (req, res) => {
+    try {
+        const userInput = req.body.userInput;
 
-    // 使用 spawn 啟動一個 Python 子進程
-    const pythonProcess = spawn("python", ["bin/bot.py", userInput]);
+        const azureFunctionUrl =
+            "https://pybot-lat.azurewebsites.net/api/HttpTrigger1?code=1iYQHuyKyXXznfScFxiba1Xc-lsHtuBf2l2H2gQkWtHzAzFuHefheg==";
 
-    let output = "";
+        console.log("Wait for Response...");
+        const response = await axios.post(azureFunctionUrl, {
+            userInput: userInput,
+        });
 
-    // 監聽子進程的輸出
-    pythonProcess.stdout.on("data", (data) => {
-        output += data.toString();
-    });
+        const connection = mysql.createConnection({
+            host: "hellomysql20230529.mysql.database.azure.com",
+            user: "zing",
+            password: "Ab123456789",
+            database: "test0529",
+            ssl: {
+                rejectUnauthorized: false,
+            },
+        });
 
-    // 監聽子進程的錯誤訊息
-    pythonProcess.stderr.on("data", (data) => {
-        console.error(`Python error: ${data}`);
+        const courseList = response.data.Output;
+        const courseFound = [];
+
+        const query = "SELECT * FROM `1111` WHERE 中文課程名稱 IN (?)";
+
+        const executeQuery = () => {
+            return new Promise((resolve, reject) => {
+                connection.query(
+                    query,
+                    courseList,
+                    (error, results, fields) => {
+                        if (error) {
+                            console.error("執行查詢失敗：", error);
+                            reject(error);
+                        } else {
+                            results.forEach((row) => {
+                                courseFound.push(row);
+                                console.log(row);
+                            });
+                            resolve();
+                        }
+                    }
+                );
+            });
+        };
+
+        connection.connect(async (err) => {
+            if (err) {
+                console.error("連線失敗：", err);
+                return res.status(500).json({ error: "連線失敗" });
+            }
+            console.log("連線成功！");
+
+            try {
+                await executeQuery();
+                connection.end();
+                // 在这里处理 Azure Function 的回应
+                res.json({ output: courseFound });
+            } catch (error) {
+                connection.end();
+                console.error("执行查询失败：", error);
+                return res.status(500).json({ error: "执行查询失败" });
+            }
+        });
+    } catch (error) {
+        console.error("An error occurred:", error);
         res.status(500).json({ error: "An error occurred" });
-    });
-
-    // 子進程結束時發送回應
-    pythonProcess.on("close", (code) => {
-        if (code === 0) {
-            res.json({ output });
-        } else {
-            res.status(500).json({ error: "An error occurred" });
-        }
-    });
+    }
 });
 
 module.exports = router;
