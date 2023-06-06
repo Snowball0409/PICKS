@@ -16,10 +16,10 @@ router.post("/", async (req, res) => {
         });
 
         const connection = mysql.createConnection({
-            host: "hellomysql20230529.mysql.database.azure.com",
-            user: "zing",
-            password: "Ab123456789",
-            database: "test0529",
+            host: "",
+            user: "",
+            password: "",
+            database: "",
             ssl: {
                 rejectUnauthorized: false,
             },
