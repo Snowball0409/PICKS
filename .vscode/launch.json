@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/www",
+            "console": "integratedTerminal",
+            "outputCapture": "std",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": ["<node_internals>/**"],
+            "env": {
+                "DEBUG": "project:server" // 此處的值應該與 "name" 屬性相同
+            }
+        }
+    ]
+}
